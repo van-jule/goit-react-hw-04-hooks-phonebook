@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import shortid from "shortid";
 import Form from "./components/Form";
@@ -15,28 +15,32 @@ const App = () => {
 
   const [filter, setFilter] = useState("");
 
-  const addNewContact = ({ name, number }) => {
-    const newContact = {
-      id: shortid.generate(),
-      name,
-      number,
-    };
-    console.log(name, number);
+  const addNewContact = useCallback(
+    ({ name, number }) => {
+      const newContact = {
+        id: shortid.generate(),
+        name,
+        number,
+      };
+      console.log(name, number);
 
-    const alreadyInContacts = contacts.find(
-      (contact) => newContact.name.toLowerCase() === contact.name.toLowerCase()
-    );
-
-    if (alreadyInContacts) {
-      alert(`${newContact.name} is already in contacts`);
-    } else {
-      setContacts([...contacts, newContact]);
-      localStorage.setItem(
-        "contacts",
-        JSON.stringify([...contacts, newContact])
+      const alreadyInContacts = contacts.find(
+        (contact) =>
+          newContact.name.toLowerCase() === contact.name.toLowerCase()
       );
-    }
-  };
+
+      if (alreadyInContacts) {
+        alert(`${newContact.name} is already in contacts`);
+      } else {
+        setContacts([...contacts, newContact]);
+        localStorage.setItem(
+          "contacts",
+          JSON.stringify([...contacts, newContact])
+        );
+      }
+    },
+    [contacts]
+  );
 
   const deleteContact = (contactId) => {
     const updatedContact = contacts.filter(

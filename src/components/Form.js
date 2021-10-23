@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import shortid from "shortid";
 import PropTypes from "prop-types";
 
@@ -7,6 +7,7 @@ import styles from "./Form.module.css";
 const Form = ({ onSubmit }) => {
   const [state, setState] = useState({ name: "", number: "" });
 
+  console.log("RERENDER");
   const nameInputId = shortid.generate();
   const telInputId = shortid.generate();
 
@@ -72,4 +73,4 @@ Form.propTypes = {
   number: PropTypes.number,
 };
 
-export default Form;
+export default memo(Form);
